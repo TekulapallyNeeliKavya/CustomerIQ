@@ -40,7 +40,7 @@ Businesses lack an automated, mathematically rigorous pipeline to continuously d
 - **Primary Source**: [UCI Machine Learning Repository](https://archive.ics.uci.edu/) & [Kaggle Customer Segmentation Benchmark](https://www.kaggle.com/datasets/vjchoudhary7/customer-segmentation-tutorial-in-python).
 - **Collection Mechanism**: Recorded via shopping mall membership/loyalty cards across 200 registered shoppers.
 - **Data Hygiene**: 200 records, 5 feature fields, zero missing values, zero duplicates.
-- **Dataset Reference Documentation**: Preserved in [`data/dataset_reference.md`](file:///C:/Users/tneel/.gemini/antigravity/scratch/CustomerIQ/data/dataset_reference.md).
+- **Dataset Reference Documentation**: Preserved in [`data/dataset_reference.md`](data/dataset_reference.md).
 
 ---
 
@@ -57,13 +57,13 @@ Businesses lack an automated, mathematically rigorous pipeline to continuously d
 ---
 
 ## 6. Data Preprocessing
-Data cleaning and normalization are handled by [`src/preprocessing.py`](file:///C:/Users/tneel/.gemini/antigravity/scratch/CustomerIQ/src/preprocessing.py):
+Data cleaning and normalization are handled by [`src/preprocessing.py`](src/preprocessing.py):
 1. **Schema Standardization**: Strips whitespace, standardizes casing, and handles naming synonyms (`Genre` $\rightarrow$ `Gender`, `cust_id` $\rightarrow$ `CustomerID`).
 2. **Duplicate & Null Handling**: Automatically detects and prunes duplicates; imputes numerical nulls with the feature median and categorical nulls with the mode.
 3. **Feature Standardization**: Applies Scikit-Learn `StandardScaler` to transform features into $Z$-scores with $\mu = 0$ and $\sigma = 1$:
    $$z = \frac{x - \mu}{\sigma}$$
    *Justification*: Because Annual Income spans \$15k–\$137k while Spending Score spans 1–100, unscaled Euclidean distance would be disproportionately dominated by income magnitude. Standardization guarantees equal geometric weighting.
-4. **Clean Sample Serialization**: Cleansed baseline is preserved in [`data/cleaned_customers_sample.csv`](file:///C:/Users/tneel/.gemini/antigravity/scratch/CustomerIQ/data/cleaned_customers_sample.csv).
+4. **Clean Sample Serialization**: Cleansed baseline is preserved in [`data/cleaned_customers_sample.csv`](data/cleaned_customers_sample.csv).
 
 ---
 
@@ -150,7 +150,7 @@ Centroids converted back to original physical retail units via inverse standard 
 | **Cluster 3** | **$88.20k** | **17.11** | High Income, Conservative Spending |
 | **Cluster 4** | **$26.30k** | **20.91** | Low Income, Low Spending |
 
-Centroids CSV is preserved at [`outputs/centroids.csv`](file:///C:/Users/tneel/.gemini/antigravity/scratch/CustomerIQ/outputs/centroids.csv).
+Centroids CSV is preserved at [`outputs/centroids.csv`](outputs/centroids.csv).
 
 ---
 
@@ -165,7 +165,7 @@ Centroids CSV is preserved at [`outputs/centroids.csv`](file:///C:/Users/tneel/.
 | **Cluster 4** | 23 | 11.5% | `████` (Pragmatic Economizers) |
 | **Total** | **200** | **100.0%** | **Full Population Segmented** |
 
-Cluster sizes CSV is preserved at [`outputs/cluster_sizes.csv`](file:///C:/Users/tneel/.gemini/antigravity/scratch/CustomerIQ/outputs/cluster_sizes.csv).
+Cluster sizes CSV is preserved at [`outputs/cluster_sizes.csv`](outputs/cluster_sizes.csv).
 
 ---
 
@@ -196,7 +196,7 @@ Cluster sizes CSV is preserved at [`outputs/cluster_sizes.csv`](file:///C:/Users
 - **Centroids**: Annual Income: \$26.3k | Spending Score: 20.9/100 | Avg Age: 45.2 yrs
 - **Key Characteristics**: Low disposable income and cautious spending; visit malls primarily for essentials, staple goods, and clearance sales.
 
-Cluster profiles summary CSV is preserved at [`outputs/cluster_profiles.csv`](file:///C:/Users/tneel/.gemini/antigravity/scratch/CustomerIQ/outputs/cluster_profiles.csv).
+Cluster profiles summary CSV is preserved at [`outputs/cluster_profiles.csv`](outputs/cluster_profiles.csv).
 
 ---
 
@@ -255,7 +255,7 @@ graph TD
 ### Setup
 ```bash
 # Clone repository
-git clone https://github.com/your-username/CustomerIQ.git
+git clone https://github.com/TekulapallyNeeliKavya/CustomerIQ.git
 cd CustomerIQ
 
 # Create isolated virtual environment

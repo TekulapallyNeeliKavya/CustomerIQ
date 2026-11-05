@@ -12,8 +12,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-import matplotlib.pyplot as plt
 import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 
 # Color palette for modern executive analytics

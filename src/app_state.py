@@ -174,21 +174,30 @@ def initialize_app_state():
     df, audit = load_dataset(DEFAULT_DATA_PATH)
     default_features = ["Annual Income (k$)", "Spending Score (1-100)"]
 
-    # Check if pre-trained pipeline exists
+    # Check if pre-trained pipeline exists and can be loaded safely
+    pipeline_loaded = False
     if os.path.exists(DEFAULT_MODEL_PATH):
-        pipeline = load_pipeline(DEFAULT_MODEL_PATH)
-        kmeans = pipeline["model"]
-        scaler = pipeline["scaler"]
-        features = pipeline["feature_names"]
-        eval_results = pipeline["evaluation_results"]
-    else:
-        # Train on the fly
+        try:
+            pipeline = load_pipeline(DEFAULT_MODEL_PATH)
+            kmeans = pipeline["model"]
+            scaler = pipeline["scaler"]
+            features = pipeline["feature_names"]
+            eval_results = pipeline["evaluation_results"]
+            pipeline_loaded = True
+        except Exception:
+            pipeline_loaded = False
+
+    if not pipeline_loaded:
+        # Fallback: Train on the fly seamlessly (0.1s)
         features = default_features
         X_scaled, scaler = scale_features(df, features)
         eval_results = evaluate_cluster_range(X_scaled, min_k=2, max_k=10, random_state=42)
         optimal_k = eval_results["optimal_k_silhouette"]
         kmeans = fit_kmeans(X_scaled, n_clusters=optimal_k, random_state=42)
-        save_pipeline(kmeans, scaler, features, eval_results, DEFAULT_MODEL_PATH)
+        try:
+            save_pipeline(kmeans, scaler, features, eval_results, DEFAULT_MODEL_PATH)
+        except Exception:
+            pass
 
     # Prepare initial clusters
     X_scaled, scaler = scale_features(df, features, scaler=scaler)
@@ -211,6 +220,15 @@ def initialize_app_state():
     st.session_state["is_custom_dataset"] = False
     st.session_state["audit"] = audit
     st.session_state["initialized"] = True
+
+    # Ensure pre-rendered static charts exist for reports downloads
+    os.makedirs(OUTPUTS_DIR, exist_ok=True)
+    required_pngs = ["elbow_method.png", "silhouette_scores.png", "cluster_visualization.png"]
+    if not all(os.path.exists(os.path.join(OUTPUTS_DIR, f)) for f in required_pngs):
+        try:
+            save_static_png_charts(df_clustered, features, eval_results, kmeans.n_clusters, OUTPUTS_DIR)
+        except Exception:
+            pass
 
 
 def retrain_model(n_clusters: int, features: Optional[List[str]] = None):
